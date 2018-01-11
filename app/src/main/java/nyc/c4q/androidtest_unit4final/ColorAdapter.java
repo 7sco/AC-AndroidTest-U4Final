@@ -1,12 +1,15 @@
 package nyc.c4q.androidtest_unit4final;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,11 +23,13 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorViewHol
     private static String TAG = "ColorAdapter";
     private List<String> colorNames;
     private HashMap<String, String> colorDict;
+    Context context;
 
-    public ColorAdapter(List<String> colors, HashMap<String, String> colorMap) {
+    public ColorAdapter(List<String> colors, HashMap<String, String> colorMap, Context context) {
         Sort.selectionSort(colors, true);
         colorNames = colors;
         colorDict = colorMap;
+        this.context=context;
     }
 
     @Override
@@ -34,18 +39,30 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorViewHol
     }
 
     @Override
-    public void onBindViewHolder(ColorViewHolder holder, int position) {
-        String color = colorNames.get(position);
+    public void onBindViewHolder(final ColorViewHolder holder, int position) {
+        final String color = colorNames.get(position);
         holder.name.setText(color);
         try {
             holder.name.setTextColor(Color.parseColor(getColor(color)));
         } catch (Exception e) { // default to black if color is not available or invalid hex.
-            Log.d(TAG, "Unable to parse color: " + color);
-            holder.name.setTextColor(Color.parseColor("#00ff00"));
-            // TODO: When the name in a viewHolder is clicked,
+
+            if(colorDict.get(color)== null){
+                holder.name.setTextColor(Color.parseColor("#0000"));
+            }
+
             // display a long toast with the text "{color_name} has a HEX value of {color_hex}
             // for example: "blue has a HEX value of #0000ff"
         }
+
+        Log.d(TAG, "Unable to parse color: " + color);
+        // TODO: When the name in a viewHolder is clicked,
+        holder.name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, color+" Has a HEX value of: "+ colorDict.get(color), Toast.LENGTH_SHORT).show();
+                Log.d("CLICKED==", "onClick: "+holder.name.getText());
+            }
+        });
     }
 
     @Override
@@ -62,10 +79,12 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorViewHol
 
     class ColorViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
+        CardView card_view;
 
         public ColorViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.color_name);
+            card_view=(CardView)itemView.findViewById(R.id.card_view);
         }
     }
 }

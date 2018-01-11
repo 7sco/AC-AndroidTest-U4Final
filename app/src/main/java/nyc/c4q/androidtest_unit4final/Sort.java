@@ -1,5 +1,7 @@
 package nyc.c4q.androidtest_unit4final;
 
+import android.util.Log;
+
 import java.util.List;
 
 /**
@@ -22,5 +24,53 @@ public class Sort {
         // You may not use Collections.sort or its equivalent
         // You may not implement another sorting algorithm that is not "selection sort"
         // Tip: Try a version without ordering first.
-    }
+
+//        for (int i=0; i<list.size(); i++) {
+//
+//            int pos=i;
+//            String aux=list.get(i);
+//
+//            while (pos>0 &&list.get(i-1).compareTo(aux) > 0){
+//
+//                list.set(pos, list.get(pos-1));
+//                pos--;
+//            }
+//            list.set(pos,aux );
+        if(isAscending) {
+            for (int i = list.size(); i > 0; i--) {
+                int lastObject = 0;
+                for (int j = 0; j < i; j++) {
+
+                    if (list.get(j).
+                            compareTo(list.get(lastObject)) > 0) {
+                        lastObject = j;
+                    }
+                    String temp = list.get(lastObject);
+
+                    list.set(lastObject, list.get(i - 1));
+                    list.set((i - 1), temp);
+                }
+            }
+        }
+        if(!isAscending){
+            for (int i = list.size(); i > 0; i--) {
+                int lastObject = 0;
+                for (int j = 0; j < i; j++) {
+
+                    if (list.get(j).
+                            compareTo(list.get(lastObject)) < 0) {
+                        lastObject = j;
+                    }
+                    String temp = list.get(lastObject);
+
+                    list.set(lastObject, list.get(i - 1));
+                    list.set((i - 1), temp);
+                }
+            }
+        }
+
+//            
+        }
+
+
 }

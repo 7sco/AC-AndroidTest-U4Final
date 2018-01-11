@@ -8,7 +8,6 @@
     card_view:cardUseCompatPadding="true"
     card_view:layout_constraintRight_toRightOf="parent">
 
-
     <TextView
         android:id="@+id/color_name"
         android:layout_width="match_parent"
